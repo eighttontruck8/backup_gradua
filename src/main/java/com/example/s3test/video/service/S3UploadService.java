@@ -1,7 +1,7 @@
 package com.example.s3test.video.service;
 
+import com.example.s3test.video.config.S3Props;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -16,9 +16,7 @@ import java.util.UUID;
 public class S3UploadService {
 
     private final S3Client s3Client;
-
-    @Value("${cloud.aws.s3.bucket}")
-    private String bucket;
+    private final S3Props props;
 
     public String uploadLocalVideo(String localFilePath) {
 
@@ -26,14 +24,14 @@ public class S3UploadService {
 
         String key = "videos/" + UUID.randomUUID() + "_" + file.getName();
 
-        PutObjectRequest putObjectRequest = PutObjectRequest.builder()
-                .bucket(bucket)
+        PutObjectRequest req = PutObjectRequest.builder()
+                .bucket(props.getBucket())
                 .key(key)
                 .contentType("video/mp4")
                 .build();
 
         s3Client.putObject(
-                putObjectRequest,
+                req,
                 RequestBody.fromFile(file)
         );
 
