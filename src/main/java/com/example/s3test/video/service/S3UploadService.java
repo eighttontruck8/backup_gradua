@@ -10,7 +10,6 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import java.io.File;
 import java.util.UUID;
 
-
 @Service
 @RequiredArgsConstructor
 public class S3UploadService {
